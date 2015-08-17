@@ -131,6 +131,7 @@
 (defn service []
   {::env :prod
    ::bootstrap/routes routes
+   ::bootstrap/router :linear-search
    ::bootstrap/resource-path "/public"
    ::bootstrap/host (config [:server :hostname])
    ::bootstrap/type :immutant
