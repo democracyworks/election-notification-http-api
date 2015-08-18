@@ -35,6 +35,20 @@ user as returned by election-notification-works but encoded the way it was
 requested in the Accept header (if supported). If no subscription entity exists
 for that user-id, it returns status 404.
 
+## Configuration
+
+* ALLOWED_ORIGINS
+    * This env var controls the cross-origin resource sharing (CORS) settings.
+    * It should be set to one of the following:
+        * `:all` to allow requests from any origin
+        * an EDN seq of allowed origin strings
+        * an EDN map containing the following keys and values
+            * :allowed-origins - sequence of strings
+            * :creds - true or false, indicates whether client is allowed to send credentials
+            * :max-age - a long, indicates the number of seconds a client should cache the response from a preflight request
+            * :methods - a string, indicates the accepted HTTP methods.  Defaults to "GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS"
+    * For example: `ALLOWED_ORIGINS=["http://foo.example.com" "http://bar.example.com"]`
+
 ## Running
 
 ### With docker-compose
