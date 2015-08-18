@@ -3,6 +3,8 @@ app:
   links:
     - rabbitmq
     - wildfly
+  environment:
+    ALLOWED_ORIGINS: :all
 wildfly:
   image: quay.io/democracyworks/wildfly:8.2.0.Final
   links:
