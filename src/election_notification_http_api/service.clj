@@ -133,6 +133,9 @@
    ::bootstrap/routes routes
    ::bootstrap/router :linear-search
    ::bootstrap/resource-path "/public"
+   ::bootstrap/allowed-origins (if (= :all (config [:server :allowed-origins]))
+                                 (constantly true)
+                                 (config [:server :allowed-origins]))
    ::bootstrap/host (config [:server :hostname])
    ::bootstrap/type :immutant
    ::bootstrap/port (config [:server :port])})
