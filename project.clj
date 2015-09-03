@@ -25,7 +25,8 @@
                  ;; https://github.com/pedestal/pedestal/issues/33
                  [org.immutant/web "2.0.2"]
                  [io.pedestal/pedestal.immutant "0.4.0"]
-                 [org.immutant/core "2.0.2"]]
+                 [org.immutant/core "2.0.2"]
+                 [democracyworks/bifrost "0.1.0-SNAPSHOT"]]
   :plugins [[lein-immutant "2.0.0"]]
   :main ^:skip-aot election-notification-http-api.server
   :target-path "target/%s"
