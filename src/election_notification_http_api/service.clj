@@ -10,8 +10,8 @@
             [kehaar.core :as k]
             [clojure.core.async :refer [go alt! timeout]]
             [clojure.tools.logging :as log]
-            [bifrost.core]
-            [bifrost.interceptors :as bifrost]
+            [bifrost.core :as bifrost]
+            [bifrost.interceptors :as bifrost.i]
             [election-notification-http-api.channels :as channels]))
 
 (def ping
@@ -29,16 +29,16 @@
                                                        "application/json"
                                                        "text/plain"])]
      ["/ping" {:get [:ping ping]}]
-     ["/subscriptions/:user-id" {:get [:read-subscription channels/read-subscriptions]}
-      ^:interceptors [(bifrost/update-in-request
+     ["/subscriptions/:user-id" {:get [:read-subscription (bifrost/interceptor channels/read-subscriptions)]}
+      ^:interceptors [(bifrost.i/update-in-request
                        [:path-params :user-id]
                        #(java.util.UUID/fromString %))
-                      (bifrost/update-in-response
+                      (bifrost.i/update-in-response
                        [:body :subscription]
                        [:body] identity)]
-      ["/:medium" {:put [:create-subscription channels/create-subscriptions]
-                   :delete [:delete-subscription channels/delete-subscriptions]}
-       ^:interceptors [(bifrost/update-in-request
+      ["/:medium" {:put [:create-subscription (bifrost/interceptor channels/create-subscriptions)]
+                   :delete [:delete-subscription (bifrost/interceptor channels/delete-subscriptions)]}
+       ^:interceptors [(bifrost.i/update-in-request
                         [:path-params :medium]
                         [:path-params :mediums]
                         (comp (partial conj #{}) keyword))]]]]]])
