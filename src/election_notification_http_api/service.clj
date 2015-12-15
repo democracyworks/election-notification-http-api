@@ -115,6 +115,28 @@
                            ring-resp/response
                            (ring-resp/status http-status)))))))))}))
 
+(def send-transactional
+  (interceptor
+   {:enter
+    (fn [ctx]
+      (let [message (get-in ctx [:request :body-params])
+            response-chan (en/send-transactional message)]
+        (log/debug :in :send-transactional :enter
+                   "sending a transactional message"
+                   (pr-str message))
+        (go
+          (let [result (alt! (timeout response-timeout) {:status :error
+                                                         :error {:type :timeout}}
+                             response-chan ([v] v))]
+            (if (= (:status result) :ok)
+              (assoc ctx :response
+                     (ring-resp/response result))
+              (let [http-status (rabbit-result->http-status result)]
+                (assoc ctx :response
+                       (-> result
+                           ring-resp/response
+                           (ring-resp/status http-status)))))))))}))
+
 (defroutes routes
   [[["/"
      ^:interceptors [(body-params)
@@ -126,7 +148,8 @@
      ["/ping" {:get [:ping ping]}]
      ["/subscriptions/:user-id" {:get [:read-subscription read-subscription]}
       ["/:medium" {:put [:create-subscription create-subscription]
-                   :delete [:delete-subscription delete-subscription]}]]]]])
+                   :delete [:delete-subscription delete-subscription]}]]
+     ["/transactional" {:post [:send-transactional send-transactional]}]]]])
 
 (defn service []
   {::env :prod

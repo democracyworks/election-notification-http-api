@@ -3,5 +3,6 @@
             [election-notification-http-api.channels :as channels]))
 
 (def create-subscription (wire-up/async->fn channels/create-subscriptions))
-(def read-subscription (wire-up/async->fn channels/read-subscriptions))
+(def read-subscription   (wire-up/async->fn channels/read-subscriptions))
 (def delete-subscription (wire-up/async->fn channels/delete-subscriptions))
+(def send-transactional  (wire-up/async->fn channels/send-transactional))

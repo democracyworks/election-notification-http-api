@@ -39,7 +39,14 @@
                               "election-notification-works.subscription.delete"
                               (config [:rabbitmq :queues "election-notification-works.subscription.delete"])
                               1000
-                              channels/delete-subscriptions)]
+                              channels/delete-subscriptions)
+                             (wire-up/external-service
+                              connection
+                              ""
+                              "election-notification-works.transactional.send"
+                              (config [:rabbitmq :queues "election-notification-works.transactional.send"])
+                              1000
+                              channels/send-transactional)]
           outgoing-events []]
 
       (wire-up/start-responder! channels/ok-requests

@@ -7,8 +7,9 @@
 (defonce create-subscriptions (async/chan))
 (defonce read-subscriptions (async/chan))
 (defonce delete-subscriptions (async/chan))
+(defonce send-transactional (async/chan))
 
 (defn close-all! []
   (doseq [c [ok-requests ok-responses create-subscriptions read-subscriptions
-             delete-subscriptions]]
+             delete-subscriptions send-transactional]]
     (async/close! c)))
