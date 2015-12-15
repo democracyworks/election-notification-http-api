@@ -1,14 +1,14 @@
 (ns election-notification-http-api.service-test
   (:require [election-notification-http-api.server :as server]
             [election-notification-http-api.service :as service]
-            [election-notification-http-api.election-notification-works :as en]
             [election-notification-http-api.channels :as channels]
             [clj-http.client :as http]
             [clojure.edn :as edn]
             [cognitect.transit :as transit]
             [clojure.test :refer :all]
             [clojure.string :as str]
-            [clojure.core.async :as async])
+            [clojure.core.async :as async]
+            [bifrost.core :as bifrost])
   (:import [java.io ByteArrayInputStream]))
 
 (def test-server-port 56303)
@@ -97,7 +97,7 @@
         (assert (not= http-response ::timeout))
         (is (= 500 (:status http-response))))))
   (testing "no response from backend service results in HTTP gateway timeout error response"
-    (with-redefs [service/response-timeout 500]
+    (with-redefs [bifrost/*response-timeout* 500]
       (let [fake-user-id (java.util.UUID/randomUUID)
             http-response-ch (async/thread
                                (http/put (str/join "/" [root-url
@@ -183,7 +183,7 @@
         (assert (not= http-response ::timeout))
         (is (= 500 (:status http-response))))))
   (testing "no response from backend service results in HTTP gateway timeout error response"
-    (with-redefs [service/response-timeout 500]
+    (with-redefs [bifrost/*response-timeout* 500]
       (let [fake-user-id (java.util.UUID/randomUUID)
             http-response-ch (async/thread
                                (http/delete (str/join "/" [root-url
@@ -264,7 +264,7 @@
         (assert (not= http-response ::timeout))
         (is (= 500 (:status http-response))))))
   (testing "no response from backend service results in HTTP gateway timeout error response"
-    (with-redefs [service/response-timeout 500]
+    (with-redefs [bifrost/*response-timeout* 500]
       (let [fake-user-id (java.util.UUID/randomUUID)
             http-response-ch (async/thread
                                (http/get (str/join "/" [root-url
