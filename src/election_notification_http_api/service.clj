@@ -41,7 +41,8 @@
        ^:interceptors [(bifrost.i/update-in-request
                         [:path-params :medium]
                         [:path-params :mediums]
-                        (comp (partial conj #{}) keyword))]]]]]])
+                        (comp (partial conj #{}) keyword))]]]
+     ["/transactional" {:post [:send-transactional (bifrost/interceptor channels/send-transactional)]}]]]])
 
 (defn service []
   {::env :prod

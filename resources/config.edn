@@ -6,4 +6,5 @@
             :queues {"election-notification-http-api.ok" {:exclusive false :durable true :auto-delete false}
                      "election-notification-works.subscription.create" {:exclusive false :durable true :auto-delete false}
                      "election-notification-works.subscription.read" {:exclusive false :durable true :auto-delete false}
-                     "election-notification-works.subscription.delete" {:exclusive false :durable true :auto-delete false}}}}
+                     "election-notification-works.subscription.delete" {:exclusive false :durable true :auto-delete false}
+                     "election-notification-works.transactional.send" {:exclusive false :durable true :auto-delete false}}}}
