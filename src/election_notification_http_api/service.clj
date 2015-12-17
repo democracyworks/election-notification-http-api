@@ -29,20 +29,26 @@
                                                        "application/json"
                                                        "text/plain"])]
      ["/ping" {:get [:ping ping]}]
-     ["/subscriptions/:user-id" {:get [:read-subscription (bifrost/interceptor channels/read-subscriptions)]}
+     ["/subscriptions/:user-id" {:get [:read-subscription
+                                       (bifrost/interceptor
+                                        channels/read-subscriptions)]}
       ^:interceptors [(bifrost.i/update-in-request
                        [:path-params :user-id]
                        #(java.util.UUID/fromString %))
                       (bifrost.i/update-in-response
                        [:body :subscription]
                        [:body] identity)]
-      ["/:medium" {:put [:create-subscription (bifrost/interceptor channels/create-subscriptions)]
-                   :delete [:delete-subscription (bifrost/interceptor channels/delete-subscriptions)]}
+      ["/:medium" {:put [:create-subscription
+                         (bifrost/interceptor channels/create-subscriptions)]
+                   :delete [:delete-subscription
+                            (bifrost/interceptor channels/delete-subscriptions)]}
        ^:interceptors [(bifrost.i/update-in-request
                         [:path-params :medium]
                         [:path-params :mediums]
                         (comp (partial conj #{}) keyword))]]]
-     ["/transactional" {:post [:send-transactional (bifrost/interceptor channels/send-transactional)]}]]]])
+     ["/transactional" {:post [:send-transactional
+                               (bifrost/interceptor
+                                channels/send-transactional)]}]]]])
 
 (defn service []
   {::env :prod
