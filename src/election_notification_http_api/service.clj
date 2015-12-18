@@ -29,6 +29,10 @@
                                                        "application/json"
                                                        "text/plain"])]
      ["/ping" {:get [:ping ping]}]
+     ["/wat" {:get [:wat
+                    (interceptor
+                     {:enter (fn [ctx]
+                               (assoc ctx :response (ring-resp/response "WAT")))})]}]
      ["/subscriptions/:user-id" {:get [:read-subscription
                                        (bifrost/interceptor
                                         channels/read-subscriptions)]}
@@ -48,7 +52,17 @@
                         (comp (partial conj #{}) keyword))]]]
      ["/transactional" {:post [:send-transactional
                                (bifrost/interceptor
-                                channels/send-transactional)]}]]]])
+                                channels/send-transactional)]}]
+     ["/turbovote-signup/:user-id"
+      {:put [:create-turbovote-signup
+             (bifrost/interceptor
+              channels/create-turbovote-signup)]
+       :delete [:delete-turbovote-signup
+                (bifrost/interceptor
+                 channels/delete-turbovote-signup)]}
+      ^:interceptors [(bifrost.i/update-in-response
+                       [:body :signup]
+                       [:body] identity)]]]]])
 
 (defn service []
   {::env :prod
