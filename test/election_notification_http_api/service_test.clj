@@ -299,8 +299,7 @@
         (let [http-response (async/alt!! http-response-ch ([v] v)
                                          (async/timeout 1000) ::timeout)]
           (assert (not= http-response ::timeout))
-          (is (= fake-user-id (:user-id message)))
-          (is (= #{:email} (get-in message [:signup :mediums])))
+          (is (= (str fake-user-id) (:user-id message)))
           (is (= 200 (:status http-response)))
-          (is (= {:signup {:user-id fake-user-id, :mediums #{:email}}}
+          (is (= {:user-id fake-user-id, :mediums #{:email}}
                  (-> http-response :body edn/read-string)))))))
