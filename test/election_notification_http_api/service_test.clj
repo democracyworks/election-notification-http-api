@@ -279,3 +279,27 @@
                                          (async/timeout 1000) ::timeout)]
           (assert (not= http-response ::timeout))
           (is (= 504 (:status http-response))))))))
+
+(deftest test-turbovote-signup
+    (testing "PUT to /turbovote-signup/:user-id puts appropriate create message
+            on create-signup channel"
+      (let [fake-user-id (java.util.UUID/randomUUID)
+            http-response-ch (async/thread
+                               (http/put (str/join "/" [root-url
+                                                        "turbovote-signup"
+                                                        fake-user-id])
+                                         {:headers {:accept "application/edn"}}))
+            [response-ch message] (async/alt!!
+                                    channels/create-turbovote-signup ([v] v)
+                                    (async/timeout 1000) [nil ::timeout])]
+        (assert (not= message ::timeout))
+        (async/>!! response-ch {:status :ok
+                                :signup {:user-id fake-user-id
+                                         :mediums #{:email}}})
+        (let [http-response (async/alt!! http-response-ch ([v] v)
+                                         (async/timeout 1000) ::timeout)]
+          (assert (not= http-response ::timeout))
+          (is (= (str fake-user-id) (:user-id message)))
+          (is (= 200 (:status http-response)))
+          (is (= {:user-id fake-user-id, :mediums #{:email}}
+                 (-> http-response :body edn/read-string)))))))

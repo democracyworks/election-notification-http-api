@@ -46,13 +46,28 @@
                               "election-notification-works.transactional.send"
                               (config [:rabbitmq :queues "election-notification-works.transactional.send"])
                               1000
-                              channels/send-transactional)]
+                              channels/send-transactional)
+
+                             (wire-up/external-service
+                              connection
+                              ""
+                              "election-notification-works.turbovote-signup.create"
+                              (config [:rabbitmq :queues "election-notification-works.turbovote-signup.create"])
+                              1000
+                              channels/create-turbovote-signup)
+                             (wire-up/external-service
+                              connection
+                              ""
+                              "election-notification-works.turbovote-signup.delete"
+                              (config [:rabbitmq :queues "election-notification-works.turbovote-signup.delete"])
+                              1000
+                              channels/delete-turbovote-signup)]
           outgoing-events []]
 
       (wire-up/start-responder! channels/ok-requests
                                 channels/ok-responses
                                 handlers/ok)
-      
+ 
       {:connections [connection]
        :channels (vec (concat
                        incoming-events
