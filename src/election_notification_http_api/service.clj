@@ -29,10 +29,6 @@
                                                        "application/json"
                                                        "text/plain"])]
      ["/ping" {:get [:ping ping]}]
-     ["/wat" {:get [:wat
-                    (interceptor
-                     {:enter (fn [ctx]
-                               (assoc ctx :response (ring-resp/response "WAT")))})]}]
      ["/subscriptions/:user-id" {:get [:read-subscription
                                        (bifrost/interceptor
                                         channels/read-subscriptions)]}
