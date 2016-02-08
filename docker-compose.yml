@@ -4,7 +4,7 @@ app:
     - rabbitmq
     - wildfly
   environment:
-    ALLOWED_ORIGINS: :all
+    ALLOWED_ORIGINS: '[".*"]'
 wildfly:
   image: quay.io/democracyworks/wildfly:8.2.0.Final
   links:
