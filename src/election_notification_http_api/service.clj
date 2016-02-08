@@ -5,6 +5,7 @@
             [io.pedestal.interceptor :refer [interceptor]]
             [ring.util.response :as ring-resp]
             [turbovote.resource-config :refer [config]]
+            [pedestal-toolbox.cors :as cors]
             [pedestal-toolbox.params :refer :all]
             [pedestal-toolbox.content-negotiation :refer :all]
             [kehaar.core :as k]
@@ -65,9 +66,9 @@
    ::bootstrap/routes routes
    ::bootstrap/router :linear-search
    ::bootstrap/resource-path "/public"
-   ::bootstrap/allowed-origins (if (= :all (config [:server :allowed-origins]))
-                                 (constantly true)
-                                 (config [:server :allowed-origins]))
+   ::bootstrap/allowed-origins (cors/domain-matcher-fn
+                                (map re-pattern
+                                     (config [:server :allowed-origins])))
    ::bootstrap/host (config [:server :hostname])
    ::bootstrap/type :immutant
    ::bootstrap/port (config [:server :port])})
