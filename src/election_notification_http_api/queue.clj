@@ -24,28 +24,31 @@
                               ""
                               "election-notification-works.subscription.create"
                               (config [:rabbitmq :queues "election-notification-works.subscription.create"])
-                              1000
+                              10000
                               channels/create-subscriptions)
+
                              (wire-up/external-service
                               connection
                               ""
                               "election-notification-works.subscription.read"
                               (config [:rabbitmq :queues "election-notification-works.subscription.read"])
-                              1000
+                              10000
                               channels/read-subscriptions)
+
                              (wire-up/external-service
                               connection
                               ""
                               "election-notification-works.subscription.delete"
                               (config [:rabbitmq :queues "election-notification-works.subscription.delete"])
-                              1000
+                              10000
                               channels/delete-subscriptions)
+
                              (wire-up/external-service
                               connection
                               ""
                               "election-notification-works.transactional.send"
                               (config [:rabbitmq :queues "election-notification-works.transactional.send"])
-                              1000
+                              10000
                               channels/send-transactional)
 
                              (wire-up/external-service
@@ -53,21 +56,22 @@
                               ""
                               "election-notification-works.turbovote-signup.create"
                               (config [:rabbitmq :queues "election-notification-works.turbovote-signup.create"])
-                              1000
+                              10000
                               channels/create-turbovote-signup)
+
                              (wire-up/external-service
                               connection
                               ""
                               "election-notification-works.turbovote-signup.delete"
                               (config [:rabbitmq :queues "election-notification-works.turbovote-signup.delete"])
-                              1000
+                              10000
                               channels/delete-turbovote-signup)]
           outgoing-events []]
 
       (wire-up/start-responder! channels/ok-requests
                                 channels/ok-responses
                                 handlers/ok)
- 
+
       {:connections [connection]
        :channels (vec (concat
                        incoming-events
