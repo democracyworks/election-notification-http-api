@@ -57,7 +57,10 @@
        :delete [:delete-turbovote-signup
                 (bifrost/interceptor
                  channels/delete-turbovote-signup)]}
-      ^:interceptors [(bifrost.i/update-in-response
+      ^:interceptors [(bifrost.i/update-in-request
+                       [:path-params :user-id]
+                       #(java.util.UUID/fromString %))
+                      (bifrost.i/update-in-response
                        [:body :signup]
                        [:body] identity)]]]]])
 
