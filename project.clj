@@ -31,7 +31,7 @@
                  [io.pedestal/pedestal.immutant "0.4.0"]
                  [org.immutant/core "2.1.5"
                   :exclusions [org.clojure/tools.reader]]
-                 [democracyworks/bifrost "0.1.4"]]
+                 [democracyworks/bifrost "0.1.5"]]
   :plugins [[lein-immutant "2.1.0"]]
   :main ^:skip-aot election-notification-http-api.server
   :target-path "target/%s"
