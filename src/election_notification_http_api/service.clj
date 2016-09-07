@@ -49,14 +49,14 @@
                         (comp (partial conj #{}) keyword))]]]
      ["/transactional" {:post [:send-transactional
                                (bifrost/interceptor
-                                channels/send-transactional)]}]
+                                channels/send-transactional 40000)]}]
      ["/turbovote-signup/:user-id"
       {:put [:create-turbovote-signup
              (bifrost/interceptor
-              channels/create-turbovote-signup)]
+              channels/create-turbovote-signup 40000)]
        :delete [:delete-turbovote-signup
                 (bifrost/interceptor
-                 channels/delete-turbovote-signup)]}
+                 channels/delete-turbovote-signup 40000)]}
       ^:interceptors [(bifrost.i/update-in-request
                        [:path-params :user-id]
                        #(java.util.UUID/fromString %))
