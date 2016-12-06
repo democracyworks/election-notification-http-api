@@ -109,7 +109,7 @@
                                              (async/timeout 41000) [nil ::timeout])]
       (assert (not= message ::timeout))
       (let [http-response (async/alt!! http-response-ch ([v] v)
-                                       (async/timeout 41000) ::timeout)]
+                                       (async/timeout 61000) ::timeout)]
         (assert (not= http-response ::timeout))
         (is (= 504 (:status http-response)))))))
 
@@ -194,7 +194,7 @@
                                              (async/timeout 41000) [nil ::timeout])]
       (assert (not= message ::timeout))
       (let [http-response (async/alt!! http-response-ch ([v] v)
-                                       (async/timeout 41000) ::timeout)]
+                                       (async/timeout 61000) ::timeout)]
         (assert (not= http-response ::timeout))
         (is (= 504 (:status http-response)))))))
 
@@ -273,7 +273,7 @@
                                              (async/timeout 41000) [nil ::timeout])]
       (assert (not= message ::timeout))
       (let [http-response (async/alt!! http-response-ch ([v] v)
-                                       (async/timeout 41000) ::timeout)]
+                                       (async/timeout 61000) ::timeout)]
         (assert (not= http-response ::timeout))
         (is (= 504 (:status http-response)))))))
 
