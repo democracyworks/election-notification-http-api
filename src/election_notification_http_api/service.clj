@@ -32,7 +32,7 @@
      ["/ping" {:get [:ping ping]}]
      ["/subscriptions/:user-id" {:get [:read-subscription
                                        (bifrost/interceptor
-                                        channels/read-subscriptions)]}
+                                        channels/read-subscriptions 60000)]}
       ^:interceptors [(bifrost.i/update-in-request
                        [:path-params :user-id]
                        #(java.util.UUID/fromString %))
@@ -40,9 +40,11 @@
                        [:body :subscription]
                        [:body] identity)]
       ["/:medium" {:put [:create-subscription
-                         (bifrost/interceptor channels/create-subscriptions)]
+                         (bifrost/interceptor channels/create-subscriptions
+                                              60000)]
                    :delete [:delete-subscription
-                            (bifrost/interceptor channels/delete-subscriptions)]}
+                            (bifrost/interceptor channels/delete-subscriptions
+                                                 60000)]}
        ^:interceptors [(bifrost.i/update-in-request
                         [:path-params :medium]
                         [:path-params :mediums]
