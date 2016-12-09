@@ -34,9 +34,8 @@
                  [democracyworks/bifrost "0.1.5"]]
   :plugins [[lein-immutant "2.1.0"]]
   :main ^:skip-aot election-notification-http-api.server
-  :target-path "target/%s"
   :uberjar-name "election-notification-http-api.jar"
   :profiles {:uberjar {:aot :all}
              :dev {:resource-paths ["dev-resources"]}
              :test {:dependencies [[clj-http "2.0.0"]]
-                    :jvm-opts ["-Dlog-level=INFO"]}})
+                    :jvm-opts ["-Dlog-level=OFF"]}})

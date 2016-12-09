@@ -1,13 +1,17 @@
-FROM quay.io/democracyworks/didor:latest
+FROM clojure:lein-2.7.1-alpine
 
 RUN mkdir -p /usr/src/election-notification-http-api
 WORKDIR /usr/src/election-notification-http-api
 
 COPY project.clj /usr/src/election-notification-http-api/
 
-RUN lein deps
+ARG env=production
+
+RUN lein with-profile $env deps
 
 COPY . /usr/src/election-notification-http-api
 
-RUN lein test
-RUN lein immutant war --name election-notification-http-api --destination target --nrepl-port=13456 --nrepl-start --nrepl-host=0.0.0.0
+RUN lein with-profiles $env,test test
+RUN lein with-profile $env uberjar
+
+CMD ["java", "-jar", "target/election-notification-http-api.jar"]
