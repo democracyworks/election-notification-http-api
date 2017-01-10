@@ -1,8 +1,6 @@
 (ns election-notification-http-api.channels
   (:require [clojure.core.async :as async]))
 
-(defonce ok-requests (async/chan))
-(defonce ok-responses (async/chan))
 (defonce create-subscriptions (async/chan))
 (defonce read-subscriptions (async/chan))
 (defonce delete-subscriptions (async/chan))
@@ -11,7 +9,7 @@
 (defonce delete-turbovote-signup (async/chan))
 
 (defn close-all! []
-  (doseq [c [ok-requests ok-responses create-subscriptions read-subscriptions
+  (doseq [c [create-subscriptions read-subscriptions
              delete-subscriptions send-transactional
              create-turbovote-signup delete-turbovote-signup]]
     (async/close! c)))
