@@ -14,4 +14,4 @@ COPY . /usr/src/election-notification-http-api
 RUN lein with-profiles $env,test test
 RUN lein with-profile $env uberjar
 
-CMD ["java", "-javaagent:resources/jars/com.newrelic.agent.java/newrelic-agent.jar", "-jar", "target/election-notification-http-api.jar"]
+CMD ["java", "-XX:+UseG1GC", "-javaagent:resources/jars/com.newrelic.agent.java/newrelic-agent.jar", "-jar", "target/election-notification-http-api.jar"]
