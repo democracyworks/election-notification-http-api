@@ -16,4 +16,4 @@ RUN lein with-profile $env uberjar
 
 CMD java ${JVM_OPTS:--XX:+UseG1GC} \
     -javaagent:resources/jars/com.newrelic.agent.java/newrelic-agent.jar \
-    -jar target/election-notification-http-ap
+    -jar target/election-notification-http-api.jar
