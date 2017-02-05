@@ -52,6 +52,16 @@
      ["/transactional" {:post [:send-transactional
                                (bifrost/interceptor
                                 channels/send-transactional 40000)]}]
+     ["/signup/:user-id"
+      {:put [:schedule-signup
+             (bifrost/interceptor
+              channels/schedule-signup 40000)]}
+      ^:interceptors [(bifrost.i/update-in-request
+                       [:path-params :user-id]
+                       #(java.util.UUID/fromString %))
+                      (bifrost.i/update-in-response
+                       [:body :signup]
+                       [:body] identity)]]
      ["/turbovote-signup/:user-id"
       {:put [:create-turbovote-signup
              (bifrost/interceptor

@@ -7,9 +7,11 @@
 (defonce send-transactional (async/chan))
 (defonce create-turbovote-signup (async/chan))
 (defonce delete-turbovote-signup (async/chan))
+(defonce schedule-signup (async/chan 100))
 
 (defn close-all! []
   (doseq [c [create-subscriptions read-subscriptions
              delete-subscriptions send-transactional
-             create-turbovote-signup delete-turbovote-signup]]
+             create-turbovote-signup delete-turbovote-signup
+             schedule-signup]]
     (async/close! c)))

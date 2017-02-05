@@ -33,4 +33,8 @@
                       {:queue "election-notification-works.turbovote-signup.delete"
                        :channel election-notification-http-api.channels/delete-turbovote-signup
                        :response true
+                       :timeout 40000}
+                      {:queue "election-notification-works.signup.schedule"
+                       :channel election-notification-http-api.channels/schedule-signup
+                       :response true
                        :timeout 40000}]}}}
