@@ -58,10 +58,7 @@
               channels/schedule-signup 40000)]}
       ^:interceptors [(bifrost.i/update-in-request
                        [:path-params :user-id]
-                       #(java.util.UUID/fromString %))
-                      (bifrost.i/update-in-response
-                       [:body :signup]
-                       [:body] identity)]]
+                       #(java.util.UUID/fromString %))]]
      ["/turbovote-signup/:user-id"
       {:put [:create-turbovote-signup
              (bifrost/interceptor
