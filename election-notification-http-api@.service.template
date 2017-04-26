@@ -25,7 +25,7 @@ ExecStart=/bin/bash -c 'docker run --name ${CONTAINER} \
   --dns $COREOS_PRIVATE_IPV4 \
   --env ALLOWED_ORIGINS="$(curl -s http://${COREOS_PRIVATE_IPV4}:8500/v1/kv/election-notification-http-api/allowed-origins?raw)" \
   --env NEW_RELIC_LICENSE_KEY=$(curl -s http://${COREOS_PRIVATE_IPV4}:8500/v1/kv/new-relic/license-key?raw) \
-  --env RABBITMQ_PORT_5672_TCP_ADDR=tvprodrmq.democracy.works \
+  --env RABBITMQ_PORT_5672_TCP_ADDR=$(curl -s http://${COREOS_PRIVATE_IPV4}:8500/v1/kv/rabbitmq/host?raw) \
   --env RABBITMQ_PORT_5672_TCP_PORT=5672 \
   --env LEIN_ARGS="with-profile production" \
   --publish 8080 \
